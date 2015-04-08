@@ -108,11 +108,17 @@
 ;; fix stupid keyboard settings on OS X
 (set-keyboard-coding-system nil)
 
-;; indent using tabs
+;; indent using tabs...
 (setq-default c-basic-offset   4
               tab-width        4
               indent-tabs-mode t
 	      backward-delete-function (quote backward-delete-char))
+
+;; ...but align with spaces!
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  "Make 'align-regexp' use spaces instead of tabs."
+  (let ((indent-tabs-mode nil))
+	    ad-do-it))
 
 ;; Linux coding style for (Objective-)C(++)
 (setq c-default-style "linux" c-basic-offset 4)
