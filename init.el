@@ -21,7 +21,9 @@
 (require 'undo-tree)
 
 ;; activate flycheck Sparkling mode
+;; configure it so that it only checks upn saving
 (require 'sparkling-flycheck)
+(setq flycheck-check-syntax-automatically '(mode-enabled save))
 
 ;; Import non-default language modes
 (require 'sparkling-mode)
