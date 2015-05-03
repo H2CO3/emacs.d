@@ -146,6 +146,17 @@
 ;; mark-multiple
 (global-set-key (kbd "M-+") 'mc/mark-next-like-this)
 
+;; copy entire line without moving cursor
+(fset 'my-copy-line-from-indentation
+  "\C-[m\C-@\C-e\C-[w")
+
+(global-set-key
+  (kbd "C-c C-k")
+  (lambda (&optional arg)
+	(interactive "p")
+	(save-excursion
+	  (execute-kbd-macro (symbol-function 'my-copy-line-from-indentation)))))
+
 ;; trailing WS sucks
 (add-hook 'c-mode-hook (lambda ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
