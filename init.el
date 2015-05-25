@@ -19,6 +19,7 @@
 (require 'pabbrev)
 (require 'vvb-mode)
 (require 'undo-tree)
+(require 'ido)
 
 ;; activate flycheck Sparkling mode
 ;; configure it so that it only checks upn saving
@@ -50,6 +51,9 @@
 
 ;; activate linum library (line numbers)
 (global-linum-mode 1)
+
+;; activate ido-mode
+(ido-mode t)
 
 ;; highlight current (active) line
 (global-hl-line-mode 1)
@@ -221,6 +225,9 @@ With argument ARG, do this that many times."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(c-offsets-alist (quote ((arglist-close . c-lineup-close-paren))))
+ '(ido-cannot-complete-command (quote ido-next-match))
+ '(ido-case-fold t)
+ '(ido-enable-flex-matching t)
  '(reb-re-syntax (quote read))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t))
@@ -229,7 +236,8 @@ With argument ARG, do this that many times."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(ido-first-match ((t (:inherit font-lock-keyword-face :weight bold))))
+ '(ido-incomplete-regexp ((t (:inherit font-lock-default-face)))))
 
 ;; Fix wrong C++11 lambda-as-argument indentation
 (defadvice c-lineup-arglist (around my activate)
