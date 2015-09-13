@@ -31,6 +31,7 @@
 (require 'lua-mode)
 (require 'swift-mode)
 (require 'lilypond-mode)
+(require 'llvm-mode)
 
 ;; Objective-C(++) mode
 (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
@@ -115,8 +116,8 @@
 (set-keyboard-coding-system nil)
 
 ;; indent using tabs...
-(setq-default c-basic-offset   4
-              tab-width        4
+(setq-default c-basic-offset   2
+              tab-width        2
               indent-tabs-mode t
 	      backward-delete-function (quote backward-delete-char))
 
@@ -127,7 +128,7 @@
 	    ad-do-it))
 
 ;; Linux coding style for (Objective-)C(++)
-(setq c-default-style "linux" c-basic-offset 4)
+(setq c-default-style "linux" c-basic-offset 2)
 
 ;; scroll only one line when going out of screen
 (setq scroll-conservatively most-positive-fixnum)
@@ -177,9 +178,9 @@
 ;; I use the Terminal in full screen, so this is nice to have
 (display-time)
 
-;; Prevent Flycheck from whining about C++11. It's a standard, c'mon!
+;; Prevent Flycheck from whining about C++14. It's a standard, c'mon!
 (add-hook 'c-mode-hook (lambda () (setq flycheck-clang-language-standard "c99")))
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
 
 ;; enable Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
