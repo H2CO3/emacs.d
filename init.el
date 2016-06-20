@@ -37,6 +37,9 @@
 (add-to-list 'auto-mode-alist '("\\.mm\\'" . objc-mode))
 ;; LilyPond mode
 (add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
+;; Rust mode
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+(autoload 'rust-mode "rust-mode" nil t)
 
 ;; set default color theme
 (require 'color-theme)
@@ -50,8 +53,9 @@
 (set-selection-coding-system 'utf-8)
 (setq locale-coding-system 'utf-8)
 
-;; activate linum library (line numbers)
+;; activate linum library (line numbers) and column-number-mode
 (global-linum-mode 1)
+(column-number-mode)
 
 ;; activate ido-mode
 (ido-mode t)
@@ -180,7 +184,10 @@
 
 ;; Prevent Flycheck from whining about C++14. It's a standard, c'mon!
 (add-hook 'c-mode-hook (lambda () (setq flycheck-clang-language-standard "c99")))
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+(add-hook 'c++-mode-hook (lambda ()
+													 (setq flycheck-clang-language-standard "c++14")
+													 (setq flycheck-clang-include-path
+																 (list (expand-file-name "/usr/local/include/")))))
 
 ;; enable Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -260,5 +267,15 @@ With argument ARG, do this that many times."
 
 ;; y/n is good enough, I don't want to type full words
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Look, I actually wrote this one myself!
+(defun insert-header-guard ()
+	(interactive)
+	(let ((fname (file-name-nondirectory (buffer-file-name))))
+		(let ((guard (upcase (replace-regexp-in-string "\\." "_" fname))))
+			(insert "#ifndef " guard "\n")
+			(insert "#define " guard "\n")
+			(newline)
+			(insert "#endif // " guard "\n"))))
 
 ;;; init.el ends here
