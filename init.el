@@ -120,10 +120,11 @@
 (set-keyboard-coding-system nil)
 
 ;; indent using tabs...
-(setq-default c-basic-offset   2
-              tab-width        2
-              indent-tabs-mode t
-	      backward-delete-function (quote backward-delete-char))
+(setq-default c-basic-offset   4
+              tab-width        4
+              indent-tabs-mode nil ;; t
+              ;; backward-delete-function 'hungry-delete-backward)
+              backward-delete-function (quote backward-delete-char))
 
 ;; ...but align with spaces!
 (defadvice align-regexp (around align-regexp-with-spaces activate)
@@ -132,7 +133,7 @@
 	    ad-do-it))
 
 ;; Linux coding style for (Objective-)C(++)
-(setq c-default-style "linux" c-basic-offset 2)
+(setq c-default-style "linux" c-basic-offset 4)
 
 ;; scroll only one line when going out of screen
 (setq scroll-conservatively most-positive-fixnum)
@@ -155,6 +156,14 @@
 ;; mark-multiple
 (global-set-key (kbd "M-+") 'mc/mark-next-like-this)
 
+;; insert TODO note
+(global-set-key (kbd "C-x t")
+  (lambda (&optional arg)
+    (interactive)
+    (insert "// TODO(H2CO3): ")
+  )
+)
+
 ;; copy entire line without moving cursor
 (fset 'my-copy-line-from-indentation
   "\C-[m\C-@\C-e\C-[w")
@@ -168,6 +177,8 @@
 
 ;; trailing WS sucks
 (add-hook 'c-mode-hook (lambda ()
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+(add-hook 'objc-mode-hook (lambda ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 (add-hook 'c++-mode-hook (lambda ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
