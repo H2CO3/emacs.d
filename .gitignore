@@ -1,0 +1,11 @@
+*.elc
+*.el~
+./**/*.elc
+./**/*.el~
+recentf
+tramp
+ido.last
+SessionDesktop.el
+history
+elpa
+.mc-lists.el

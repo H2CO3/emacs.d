@@ -15,16 +15,10 @@
 
 ;; import general-purpose libraries
 (require 'linum)
-(require 'flycheck)
 (require 'pabbrev)
 (require 'vvb-mode)
 (require 'undo-tree)
 (require 'ido)
-
-;; activate flycheck Sparkling mode
-;; configure it so that it only checks upn saving
-(require 'sparkling-flycheck)
-(setq flycheck-check-syntax-automatically '(mode-enabled save))
 
 ;; Import non-default language modes
 (require 'sparkling-mode)
@@ -125,6 +119,7 @@
               indent-tabs-mode nil ;; t
               ;; backward-delete-function 'hungry-delete-backward)
               backward-delete-function (quote backward-delete-char))
+(setq js-indent-level 2)
 
 ;; ...but align with spaces!
 (defadvice align-regexp (around align-regexp-with-spaces activate)
@@ -178,6 +173,8 @@
 ;; trailing WS sucks
 (add-hook 'c-mode-hook (lambda ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+(add-hook 'rust-mode-hook (lambda ()
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 (add-hook 'objc-mode-hook (lambda ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 (add-hook 'c++-mode-hook (lambda ()
@@ -192,16 +189,6 @@
 
 ;; I use the Terminal in full screen, so this is nice to have
 (display-time)
-
-;; Prevent Flycheck from whining about C++14. It's a standard, c'mon!
-(add-hook 'c-mode-hook (lambda () (setq flycheck-clang-language-standard "c99")))
-(add-hook 'c++-mode-hook (lambda ()
-													 (setq flycheck-clang-language-standard "c++14")
-													 (setq flycheck-clang-include-path
-																 (list (expand-file-name "/usr/local/include/")))))
-
-;; enable Flycheck
-(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; this is just cool
 (defun toggle-frame-split ()
@@ -247,6 +234,9 @@ With argument ARG, do this that many times."
  '(ido-cannot-complete-command (quote ido-next-match))
  '(ido-case-fold t)
  '(ido-enable-flex-matching t)
+ '(package-selected-packages
+   (quote
+    (exec-path-from-shell zonokai-theme undo-tree nlinum multiple-cursors expand-region)))
  '(reb-re-syntax (quote read))
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t))
@@ -288,5 +278,8 @@ With argument ARG, do this that many times."
 			(insert "#define " guard "\n")
 			(newline)
 			(insert "#endif // " guard "\n"))))
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;;; init.el ends here
